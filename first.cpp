@@ -39,10 +39,10 @@ public:
 
     void AddCustomer()
     {
-        int age = 1;
+        int age = 0;
         string name;
         cout << "Enter Your Age \t";
-        // cin >> age;
+        cin >> age;
         cout << "\n"
              << "Enter Your Name\t";
         cin >> name;
@@ -158,37 +158,52 @@ void Admin(Bank *banks, int *totalBanksNo)
 {
     int userInput, temp;
     string removeName;
-    cin >> userInput;
-
-    switch (userInput)
+    bool boolVar = true;
+    while (boolVar)
     {
-        // 1 register
-        //2 remove
-        //3 show all customers of a bank
-    case 1:
-        banks[*totalBanksNo] = Bank("SBI");
-        DisplayBankDetails(banks[*totalBanksNo]);
-        *totalBanksNo += 1;
-        DisplayAllBanks(banks, totalBanksNo);
-        break;
-    case 2:
+        cout << "1) Register New Bank" << endl;
+        cout << "2) Remove Bank" << endl;
+        cout << "3) Show all Customers of a  Bank" << endl;
+        cout << "4) Exit" << endl;
+        cin >> userInput;
 
-        cout << "\n"
-             << "Enter Name of bank you want to delete\n";
-        cin >> removeName;
-        cout << endl;
-        RemoveBank(removeName, banks, totalBanksNo);
-        DisplayAllBanks(banks, totalBanksNo);
-        break;
-    case 3:
+        switch (userInput)
+        {
+            // 1 register
+            //2 remove
+            //3 show all customers of a bank
+        case 1:
+            cout << "Enter bank name\n";
+            cin >> removeName;
+            banks[*totalBanksNo] = Bank(removeName);
+            DisplayBankDetails(banks[*totalBanksNo]);
+            *totalBanksNo += 1;
+            DisplayAllBanks(banks, totalBanksNo);
+            break;
+        case 2:
 
-        cout << "\n"
-             << "Enter Name of bank you want to show customers\n";
-        cin >> removeName;
-        cout << endl;
-        DisplayBanksCustomers(removeName, banks, totalBanksNo);
+            cout << "\n"
+                 << "Enter Name of bank you want to delete\n";
+            cin >> removeName;
+            cout << endl;
+            RemoveBank(removeName, banks, totalBanksNo);
+            DisplayAllBanks(banks, totalBanksNo);
+            break;
+        case 3:
 
-        break;
+            cout << "\n"
+                 << "Enter Name of bank you want to show customers\n";
+            cin >> removeName;
+            cout << endl;
+            DisplayBanksCustomers(removeName, banks, totalBanksNo);
+
+            break;
+        case 4:
+            boolVar = false;
+            break;
+        default:
+            cout << "Incorrect Input,Please Try again";
+        }
     }
 }
 
@@ -198,16 +213,31 @@ void User(Bank *banks, int *totalBanksNo)
     int userInput = 1;
     string bname;
     //1 Register
-    switch (userInput)
+    bool boolVar = true;
+    while (boolVar)
     {
-    case 1:
+        cout << "1) Create Account" << endl;
+        cout << "2) Exit" << endl;
+        cin >> userInput;
+        switch (userInput)
+        {
+        case 1:
 
-        DisplayAllBanks(banks, totalBanksNo);
-        cout << "Enter the name of a bank you want to create an account in" << endl;
-        cin >> bname;
-        InsertUser(bname, banks, totalBanksNo);
+            DisplayAllBanks(banks, totalBanksNo);
+            cout << "Enter the name of a bank you want to create an account in" << endl;
+            cin >> bname;
+            InsertUser(bname, banks, totalBanksNo);
+            cout << "Account Succesfully Created/n";
 
-        break;
+            break;
+        case 2:
+
+            boolVar = false;
+            break;
+        default:
+            cout << "Eneterd Incorrect Input";
+            break;
+        }
     }
 }
 //main method
@@ -215,11 +245,31 @@ int main()
 {
     Bank banks[100];
     int totalBanksNo = 0;
+    bool Var = true;
+    int userInput;
+    while (Var)
+    {
+        cout << "1)Admin" << endl;
+        cout << "2) User" << endl;
+        cout << "3) Exit" << endl;
+        cin >> userInput;
+        switch (userInput)
+        {
+        case 1:
+            Admin(banks, &totalBanksNo);
+            break;
+        case 2:
+            User(banks, &totalBanksNo);
+            break;
+        case 3:
+            Var = false;
+            break;
 
-    Admin(banks, &totalBanksNo);
-    User(banks, &totalBanksNo);
-    User(banks, &totalBanksNo);
-    Admin(banks, &totalBanksNo);
+        default:
+            cout << "Eneterd Incorrect Input";
+            break;
+        }
+    }
 
     return 0;
 }
@@ -230,3 +280,9 @@ int main()
 // users can register to bank
 // users can add money
 // users can remove money
+//
+
+// Admin(banks, &totalBanksNo);
+// User(banks, &totalBanksNo);
+// User(banks, &totalBanksNo);
+// Admin(banks, &totalBanksNo);
