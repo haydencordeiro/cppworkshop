@@ -17,6 +17,10 @@ public:
         name = Name;
         balance = Balance;
     }
+    void updateBalance(int b)
+    {
+        balance += b; //+=
+    }
 };
 
 class Bank
@@ -55,10 +59,26 @@ public:
         for (int i = 0; i < totalCustomers; i++)
         {
             cout << "_____________________________________" << endl;
-            cout << "Name" << customers[i].name << endl;
-            cout << "Age" << customers[i].age << endl;
-            cout << "Balance" << customers[i].balance << endl;
+            cout << "Name " << customers[i].name << endl;
+            cout << "Age " << customers[i].age << endl;
+            cout << "Balance " << customers[i].balance << endl;
             cout << "_____________________________________" << endl;
+        }
+    }
+    void Deposit(string name)
+    {
+        int amount = 0;
+        bool done = false;
+        for (int i = 0; i < totalCustomers; i++)
+        {
+            if (customers[i].name == name)
+            {
+                cout << "Your Name is " << customers[i].name << "Your Age is " << customers[i].age << " Your Current Balance is " << customers[i].balance << endl;
+                cout << "Please Enter Amount you want to deposit\n";
+                cin >> amount;
+                customers[i].updateBalance(amount);
+                cout << "Your New Balance is " << customers[i].balance << endl;
+            }
         }
     }
 };
@@ -145,12 +165,34 @@ void DisplayBanksCustomers(string bname, Bank *banks, int *totalBanksNo)
     if (temp != -1)
     {
 
-        Bank tempCount = banks[temp];
-        tempCount.displayCustomers();
+        banks[temp].displayCustomers();
     }
     else
     {
         cout << "Bank Not Found! Please make sure you enter the correct name";
+    }
+}
+
+void DepositFunc(string bname, Bank *banks, int *totalBanksNo, string name)
+{
+    int temp = -1;
+
+    for (int i = 0; i < *totalBanksNo; i++)
+    {
+        if (banks[i].bankName == bname)
+        {
+            temp = i;
+            break;
+        }
+    }
+    if (temp != -1)
+    {
+
+        banks[temp].Deposit(name);
+    }
+    else
+    {
+        cout << "Bank Not Found! Please make sure you enter the fields correctly";
     }
 }
 
@@ -164,7 +206,8 @@ void Admin(Bank *banks, int *totalBanksNo)
         cout << "1) Register New Bank" << endl;
         cout << "2) Remove Bank" << endl;
         cout << "3) Show all Customers of a  Bank" << endl;
-        cout << "4) Exit" << endl;
+        cout << "4) Show all Banks" << endl;
+        cout << "5) Exit" << endl;
         cin >> userInput;
 
         switch (userInput)
@@ -199,6 +242,9 @@ void Admin(Bank *banks, int *totalBanksNo)
 
             break;
         case 4:
+            DisplayAllBanks(banks, totalBanksNo);
+            break;
+        case 5:
             boolVar = false;
             break;
         default:
@@ -211,13 +257,14 @@ void User(Bank *banks, int *totalBanksNo)
 {
 
     int userInput = 1;
-    string bname;
+    string bname, name;
     //1 Register
     bool boolVar = true;
     while (boolVar)
     {
         cout << "1) Create Account" << endl;
-        cout << "2) Exit" << endl;
+        cout << "2) Deposit money" << endl;
+        cout << "3) Exit" << endl;
         cin >> userInput;
         switch (userInput)
         {
@@ -231,7 +278,13 @@ void User(Bank *banks, int *totalBanksNo)
 
             break;
         case 2:
-
+            cout << "Enter the name of the bank in which you want to deposit money \n";
+            cin >> bname;
+            cout << "Enter your name \n";
+            cin >> name;
+            DepositFunc(bname, banks, totalBanksNo, name);
+            break;
+        case 3:
             boolVar = false;
             break;
         default:
@@ -260,7 +313,7 @@ int main()
             break;
         case 2:
             User(banks, &totalBanksNo);
-            break;
+            break; //break statement
         case 3:
             Var = false;
             break;
